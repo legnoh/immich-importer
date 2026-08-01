@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "hello",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "main.go",
+      "args": ["hello", "world", "--debug"],
+      // "envFile": "${workspaceFolder}/.env",
+    }
+  ]
+}

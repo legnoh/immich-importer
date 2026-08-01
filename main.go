@@ -1,0 +1,47 @@
+package main
+
+import (
+	"log/slog"
+
+	"github.com/alecthomas/kong"
+	"github.com/legnoh/kong-boilerplate/cmd"
+	"github.com/legnoh/kong-boilerplate/internal/logger"
+)
+
+var version = ""
+var appname = "kong-boilerplate"    // CHANGE ME
+var appdesc = "My CLI application." // CHANGE ME
+
+var cli struct {
+	GlobalFlags cmd.GlobalFlags  `embed:""`
+	Version     kong.VersionFlag `name:"version" help:"Show version."`
+
+	// Subcommands
+	Hello cmd.HelloCmd `cmd:"hello" help:"Say hello."`
+}
+
+func main() {
+	ctx := kong.Parse(
+		&cli,
+		kong.Name(appname),
+		kong.Description(appdesc),
+		kong.UsageOnError(),
+		kong.Vars{"version": version},
+		kong.Bind(cli.GlobalFlags),
+	)
+
+	level := slog.LevelInfo
+	if cli.GlobalFlags.Debug {
+		level = slog.LevelDebug
+	}
+
+	log := logger.NewWithLevel(level)
+	logger.Default = log
+	log.Debug("starting CLI")
+
+	err := ctx.Run()
+	if err != nil {
+		log.Error("error running command", "msg", err)
+		ctx.Exit(1)
+	}
+}
