@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/legnoh/kong-boilerplate/internal/logger"
+	"github.com/legnoh/immich-importer/internal/logger"
 )
 
 type HelloCmd struct {

@@ -4,8 +4,8 @@ import (
 	"log/slog"
 
 	"github.com/alecthomas/kong"
-	"github.com/legnoh/kong-boilerplate/cmd"
-	"github.com/legnoh/kong-boilerplate/internal/logger"
+	"github.com/legnoh/immich-importer/cmd"
+	"github.com/legnoh/immich-importer/internal/logger"
 )
 
 var version = ""
@@ -17,7 +17,8 @@ var cli struct {
 	Version     kong.VersionFlag `name:"version" help:"Show version."`
 
 	// Subcommands
-	Hello cmd.HelloCmd `cmd:"hello" help:"Say hello."`
+	Hello  cmd.HelloCmd  `cmd:"hello" help:"Say hello."`
+	Upload cmd.UploadCmd `cmd:"upload" short:"u" help:"Upload files"`
 }
 
 func main() {

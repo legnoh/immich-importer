@@ -9,6 +9,19 @@
       "program": "main.go",
       "args": ["hello", "world", "--debug"],
       // "envFile": "${workspaceFolder}/.env",
+    },
+    {
+      "name": "upload",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "main.go",
+      "args": [
+        "upload",
+        "/Users/legnoh/Downloads/test",
+        "--debug"
+      ],
+      "envFile": "${workspaceFolder}/.env",
     }
   ]
 }
