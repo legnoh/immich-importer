@@ -1,6 +1,6 @@
-# kong-boilerplate
+# immich-importer
 
-A small Go CLI starter using Kong for command parsing and slog + tint for structured logging.
+A small Go CLI for immich upload and create stack
 
 ## Features
 
