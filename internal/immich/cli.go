@@ -34,7 +34,7 @@ func LoginWithImmichCli(endpoint, apiKey string) (string, string, error) {
 }
 
 func UploadWithImmichCli(filePath string) (*UploadResponse, error) {
-	cmd := exec.Command("immich", "upload", filePath, "--album", "--json-output", "--no-progress")
+	cmd := exec.Command("immich", "upload", filePath+"/*", "--album", "--json-output", "--no-progress")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return nil, fmt.Errorf("immich upload failed: %w, output: %s", err, string(output))
