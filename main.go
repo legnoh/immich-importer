@@ -9,8 +9,8 @@ import (
 )
 
 var version = ""
-var appname = "kong-boilerplate"    // CHANGE ME
-var appdesc = "My CLI application." // CHANGE ME
+var appname = "immich-importer"           // CHANGE ME
+var appdesc = "Import files into Immich." // CHANGE ME
 
 var cli struct {
 	GlobalFlags cmd.GlobalFlags  `embed:""`
