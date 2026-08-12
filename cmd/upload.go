@@ -29,11 +29,13 @@ func (c *UploadCmd) Run(g GlobalFlags) error {
 	})
 
 	// immich cliでファイルをアップロードする
+	log.Info("uploading files with immich cli...", "fileCount", len(files))
 	uploadResponse, err := immich.UploadWithImmichCli(files)
 	if err != nil {
 		log.Error("failed to upload with immich cli", "msg", err)
 		return err
 	}
+	log.Info("upload completed", "duplicates", len(uploadResponse.Duplicates), "newAssets", len(uploadResponse.NewAssets))
 
 	// http client作成
 	client, err := immich.NewImmichClient(g.ImmichEndpoint, g.ImmichApiKey)
@@ -77,6 +79,7 @@ func (c *UploadCmd) Run(g GlobalFlags) error {
 			log.Error("failed to create album", "msg", err)
 			return err
 		}
+		log.Info("album created successfully", "albumName", album.Name, "url", g.ImmichEndpoint+"/albums/"+album.ID)
 
 		// Albumのサムネイルを1番目のアセットにして、昇順に並べる
 		_, err = client.UpdateAlbum(album.ID, primaryAsset.ID)
@@ -91,6 +94,7 @@ func (c *UploadCmd) Run(g GlobalFlags) error {
 			log.Error("failed to create stack", "msg", err)
 			return err
 		}
+		log.Info("stack created successfully", "stackId", stackResponse.ID, "url", g.ImmichEndpoint+"/stacks/"+stackResponse.ID)
 
 		// Stackのメインを1番目のアセットにする
 		_, err = client.UpdateStack(stackResponse.ID, primaryAsset.ID)
@@ -110,6 +114,7 @@ func (c *UploadCmd) Run(g GlobalFlags) error {
 		dateTimeBase := time.Date(dateTimeOrigin.Year(), dateTimeOrigin.Month(), dateTimeOrigin.Day(), 0, 0, 0, 0, dateTimeOrigin.Location())
 
 		// 先ほどのソートしたアルバムアセットを順番に更新していく
+		log.Info("updating asset date time in ascending order...", "assetCount", len(assets))
 		for i, asset := range assets {
 			newDateTime := dateTimeBase.Add(time.Duration(i) * time.Second)
 			log.Debug("updating asset date time", "assetId", asset.Id, "newDateTime", newDateTime.Format("2006-01-02T15:04:05.000Z"))
@@ -120,6 +125,6 @@ func (c *UploadCmd) Run(g GlobalFlags) error {
 			}
 		}
 	}
-	log.Info("file uploaded successfully", "duplicates", len(uploadResponse.Duplicates), "newAssets", len(uploadResponse.NewAssets))
+	log.Info("all upload process was completed successfully!")
 	return nil
 }
