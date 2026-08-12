@@ -33,8 +33,10 @@ func LoginWithImmichCli(endpoint, apiKey string) (string, string, error) {
 	return stdout.String(), stderr.String(), nil
 }
 
-func UploadWithImmichCli(filePath string) (*UploadResponse, error) {
-	cmd := exec.Command("immich", "upload", filePath, "--album", "--json-output", "--no-progress")
+func UploadWithImmichCli(files []string) (*UploadResponse, error) {
+	cmd := exec.Command("immich", "upload")
+	cmd.Args = append(cmd.Args, files...)
+	cmd.Args = append(cmd.Args, "--json-output", "--no-progress")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return nil, fmt.Errorf("immich upload failed: %w, output: %s", err, string(output))

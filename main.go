@@ -19,6 +19,7 @@ var cli struct {
 	// Subcommands
 	Hello  cmd.HelloCmd  `cmd:"hello" help:"Say hello."`
 	Upload cmd.UploadCmd `cmd:"upload" short:"u" help:"Upload files"`
+	Update cmd.UpdateCmd `cmd:"update" short:"U" help:"Update albums"`
 }
 
 func main() {
@@ -40,7 +41,7 @@ func main() {
 	logger.Default = log
 	log.Debug("starting CLI")
 
-	err := ctx.Run()
+	err := ctx.Run(cli.GlobalFlags)
 	if err != nil {
 		log.Error("error running command", "msg", err)
 		ctx.Exit(1)
