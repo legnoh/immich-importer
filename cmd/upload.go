@@ -16,6 +16,19 @@ type UploadCmd struct {
 func (c *UploadCmd) Run(g GlobalFlags) error {
 	log := logger.Default
 
+	// すでにimmich cliでログイン済みか確認し、自動でAPIキーとURLを読み込む
+	if g.ImmichCliAutoLogin {
+		log.Info("checking immich cli login status...")
+		endpoint, apiKey, err := immich.GetImmichCliLoginInfo()
+		if err != nil {
+			log.Error("immich cli login info not found", "msg", err)
+			return err
+		}
+		g.ImmichEndpoint = endpoint
+		g.ImmichApiKey = apiKey
+		log.Info("immich cli login info found", "endpoint", g.ImmichEndpoint)
+	}
+
 	// パス配下のファイルを取得する
 	files, err := filepath.Glob(c.FolderPath + "/*")
 	if err != nil {
